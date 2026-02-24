@@ -12,8 +12,7 @@ A Spring Boot-based microservice designed to manage and retrieve chat history lo
 ## Setup & Installation
 ### 1. Clone the repository:
 ```bash
-git clone https://github.com
-cd chat-history
+git clone https://github.com/Mystieee/CG-RAG-Chat-Storage.git
 ```
 
 ### 2. Environment Configuration:
@@ -43,7 +42,7 @@ The application will start on http://localhost:8080 by default.
 
 ## 🛠 API Documentation
 ### Authentication
-All API requests require an ```X-API-KEY``` header for authentication.<br/>
+All API requests (except Swagger paths) require an ```X-API-KEY``` header for authentication.<br/>
 **Header Name**: ```X-API-KEY``` <br/>
 **Value**: (Defined in your ```.env``` file)
 ### Endpoints
@@ -59,14 +58,18 @@ All API requests require an ```X-API-KEY``` header for authentication.<br/>
 ### API Documentation (Swagger/OpenAPI)
 If the application is running, you can access the interactive Swagger UI to test the endpoints: <br/>
 **Swagger UI**: http://localhost:8080/swagger-ui.html <br/>
-**API Docs**: http://localhost:8080/v3/api-docs
+**API Docs**: http://localhost:8080/v3/api-docs <br/>
+**Note**: To test via Swagger, click the "**Authorize**" button 
+and enter the ```CHAT_API_KEY``` defined in your ```.env``` file.
+
+
 ### 🏗 Project Structure
 ```src/main/java```: Contains the Spring Boot application logic (Controllers, Services, Entities).
 <br/>
 ```src/main/resources```: Contains application.properties and static resources.<br/>
 ```.env```: (Local only) Environment variables for sensitive data.
 ### ⚙️ Configuration Details
-The application uses the following key properties (located in application.properties):
+The application uses the following key properties (located in ```application.properties```):
 <br/>
 ```spring.jpa.hibernate.ddl-auto=update```: Automatically manages database schema updates.
 ```management.health.redis.enabled=false```: Redis health checks are disabled as this service focuses on PostgreSQL.
