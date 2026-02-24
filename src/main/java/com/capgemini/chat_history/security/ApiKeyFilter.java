@@ -28,23 +28,29 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
         String requestPath = request.getServletPath();
 
-        // 1. Skip Authentication for Swagger & OpenAPI docs
+        // 1. Always allow OPTIONS requests for CORS
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+
+        // 2. Skip Authentication for Swagger & OpenAPI docs
         if (isPublicEndpoint(requestPath)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 2. Extract Key from Header
+        // 3. Extract Key from Header
         String requestApiKey = request.getHeader(AUTH_HEADER);
 
-        // 3. Validate the Key
+        // 4. Validate the Key
         if (configuredApiKey.equals(requestApiKey)) {
             log.debug("API Key authenticated successfully for path: {}", requestPath);
             filterChain.doFilter(request, response);
         } else {
             log.warn("Unauthorized access attempt on path: {} with key: {}", requestPath, requestApiKey);
 
-            // 4. Send Custom Error Response
+            // 5. Send Custom Error Response
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType("application/json");
             response.getWriter().write("{\"error\": \"Invalid or missing API Key in " + AUTH_HEADER + " header\"}");

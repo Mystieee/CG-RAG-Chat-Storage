@@ -89,3 +89,7 @@ The application uses **Spring Boot Actuator** to provide real-time health monito
 - **Status Check**: [http://localhost:8080/actuator/health](http://localhost:8080/actuator/health)
    - **Response**: `{"status": "UP", "components": {"db": {"status": "UP", ...}}}`
    - *Confirms the application and PostgreSQL connection are both healthy.*
+
+### 🌐 CORS Configuration
+The API is configured to allow Cross-Origin requests.
+- Update `ALLOWED_ORIGINS` in the `.env` file to restrict access to specific frontend url.
