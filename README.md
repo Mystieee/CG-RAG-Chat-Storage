@@ -73,3 +73,12 @@ The application uses the following key properties (located in ```application.pro
 <br/>
 ```spring.jpa.hibernate.ddl-auto=update```: Automatically manages database schema updates.
 ```management.health.redis.enabled=false```: Redis health checks are disabled as this service focuses on PostgreSQL.
+
+### 🧪 Testing & Code Coverage
+
+1. **Run the Test Suite**: <br/>
+   Execute the following command to run all JUnit 5 tests and generate the coverage report:
+   ```bash
+   mvn clean test jacoco:report
+   ```
+   Navigate to ```target/site/jacoco/index.html``` to view the report.

@@ -23,7 +23,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ChatStorageServceImpl implements ChatStorageService {
+public class ChatStorageServiceImpl implements ChatStorageService {
 
     private final ChatSessionRepository sessionRepository;
     private final ChatMessageRepository messageRepository;
