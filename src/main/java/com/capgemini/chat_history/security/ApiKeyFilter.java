@@ -54,6 +54,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
     private boolean isPublicEndpoint(String path) {
         return path.contains("/v3/api-docs") ||
                 path.contains("/swagger-ui") ||
+                path.contains("/actuator/health") ||
                 path.contains("/favicon.ico");
     }
 }

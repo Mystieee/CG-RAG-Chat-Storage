@@ -82,3 +82,10 @@ The application uses the following key properties (located in ```application.pro
    mvn clean test jacoco:report
    ```
    Navigate to ```target/site/jacoco/index.html``` to view the report.
+
+### 🏥 Health Checks & Monitoring
+The application uses **Spring Boot Actuator** to provide real-time health monitoring. These endpoints are whitelisted and do not require an API Key.
+
+- **Status Check**: [http://localhost:8080/actuator/health](http://localhost:8080/actuator/health)
+   - **Response**: `{"status": "UP", "components": {"db": {"status": "UP", ...}}}`
+   - *Confirms the application and PostgreSQL connection are both healthy.*
