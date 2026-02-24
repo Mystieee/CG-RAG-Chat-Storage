@@ -1,13 +1,14 @@
 package com.capgemini.chat_history.exception;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -17,7 +18,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Handle Resource Not Found (404)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex, HttpServletRequest request) {
         log.error("Resource not found: {}", ex.getMessage());
@@ -30,7 +30,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-//    // Handle Validation Errors (400) - e.g. empty message content
     @ExceptionHandler(MethodArgumentNotValidException.class)
         public ResponseEntity<Map<String, String>> handleValidationExceptions(
                 MethodArgumentNotValidException ex) {
@@ -41,7 +40,6 @@ public class GlobalExceptionHandler {
             return ResponseEntity.badRequest().body(errors);
         }
 
-    // Handle Generic Internal Server Errors (500)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, HttpServletRequest request) {
         log.error("Unexpected error occurred: ", ex);
@@ -61,5 +59,9 @@ public class GlobalExceptionHandler {
         error.put("message", ex.getMessage()); // This will show "Session not found with ID: ..."
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public void handleNoResourceFoundException(NoResourceFoundException ex) {
     }
 }
