@@ -5,6 +5,7 @@ import com.capgemini.chat_history.dto.ChatSessionResponse;
 import com.capgemini.chat_history.dto.MessageRequest;
 import com.capgemini.chat_history.dto.SessionRequest;
 import com.capgemini.chat_history.service.ChatStorageService;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,9 +67,13 @@ public class ChatStorageController {
     @Operation(summary = "Get history", description = "Retrieve paginated messages for a specific session.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Chat History retrieved"),
-            @ApiResponse(responseCode = "404", description = "Session not found")
+            @ApiResponse(responseCode = "404", description = "Session not found"),
+            @ApiResponse(responseCode = "429", description = "Rate limit exceeded - Please wait for sometime")
     })
-    public ResponseEntity<Page<ChatHistoryResponse>> getHistory(@PathVariable UUID id, @PageableDefault Pageable page) {
-        return ResponseEntity.ok(chatService.getSessionHistory(id, page));
+    public ResponseEntity<Page<ChatHistoryResponse>> getHistory(
+            @PathVariable UUID id,
+            @Parameter(description = "Pagination and sorting (e.g. ?page=0&size=20&sort=ASC)")
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable) {
+        return ResponseEntity.ok(chatService.getSessionHistory(id, pageable));
     }
 }

@@ -14,7 +14,13 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(
                 title = "RAG Chat History API",
                 version = "1.0",
-                description = "APIs for managing RAG chat sessions and history. Requires X-API-KEY for authentication."
+                description = """
+            API for managing RAG chat history and sessions
+            ### Rate Limiting Policy
+            - **Limit:** 50 requests per minute per API Key.
+            - **Exceeded:** Returns `429 Too Many Requests`.
+            - **Header:** Use `X-API-KEY` for authentication.
+            """
         )
 )
 public class OpenApiConfig {

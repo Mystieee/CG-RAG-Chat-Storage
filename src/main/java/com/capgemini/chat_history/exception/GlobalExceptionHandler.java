@@ -3,6 +3,7 @@ package com.capgemini.chat_history.exception;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -63,5 +64,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoResourceFoundException.class)
     public void handleNoResourceFoundException(NoResourceFoundException ex) {
+    }
+
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidSort(InvalidDataAccessApiUsageException ex) {
+        log.warn("Invalid sort parameter provided: {}", ex.getMessage());
+        return ResponseEntity.badRequest().body(Map.of(
+                "error", "Invalid Sort Parameter",
+                "message", "The sort field provided does not exist on the entity. use sort: ASC"
+        ));
     }
 }
